@@ -31,6 +31,13 @@ class EventsUITests: XCTestCase {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
+    
+    func testHelloWorld() {
+        let app = XCUIApplication()
+        app.launch()
+        
+        XCTAssert(app.staticTexts["Hello, World!"].exists)
+    }
 
     func testLaunchPerformance() {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
