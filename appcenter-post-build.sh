@@ -18,21 +18,29 @@ appName="Events"
 appCenterName="dylanberry/$appName"
 deviceSetName=953b7f67
 testSeriesName="mytests"
-
-cd $APPCENTER_SOURCE_DIRECTORY
-
-xcodebuild build-for-testing \
-  -configuration Debug \
-  -sdk iphoneos \
-  -scheme Events \
-  -derivedDataPath DerivedData
+derived_data_dir="DerivedData"
+scheme=$appName
 
 echo ""
-echo "Start Xamarin.UITest run"
+echo "Start XCUITest run"
 echo "App Center Name: $appCenterName"
 echo "     Device Set: $deviceSetName"
 echo "    Test Series: $testSeriesName"
 echo ""
+
+cd $APPCENTER_SOURCE_DIRECTORY
+
+
+if [ -d "${derived_data_dir}" ]; then
+  rm -rf "${derived_data_dir}"
+fi
+
+echo "> Build app for testing"
+xcrun xcodebuild build-for-testing \
+  -configuration Debug \
+  -sdk iphoneos \
+  -scheme "${scheme}" \
+  -derivedDataPath "${derived_data_dir}"
 
 echo "> Run UI test command"
 # Note: must put a space after each parameter/value pair
