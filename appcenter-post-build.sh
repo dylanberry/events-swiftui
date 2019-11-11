@@ -14,20 +14,36 @@ echo "**************************************************************************
 
 # variables
 appCenterLoginApiToken=$AppCenterLoginForAutomatedUITests # this comes from the build environment variables
-appName="tomso/Pickster"
-deviceSetName="tomso/top-devices"
-testSeriesName="all-tests"
+appName="Events"
+appCenterName="dylanberry/$appName"
+deviceSetName=953b7f67
+testSeriesName="mytests"
+
+cd $APPCENTER_SOURCE_DIRECTORY
+
+xcodebuild build-for-testing \
+  -configuration Debug \
+  -sdk iphoneos \
+  -scheme Events \
+  -derivedDataPath DerivedData
 
 echo ""
 echo "Start Xamarin.UITest run"
-echo "   App Name: $appName"
-echo " Device Set: $deviceSetName"
-echo "Test Series: $testSeriesName"
+echo "App Center Name: $appCenterName"
+echo "     Device Set: $deviceSetName"
+echo "    Test Series: $testSeriesName"
 echo ""
 
 echo "> Run UI test command"
 # Note: must put a space after each parameter/value pair
-appcenter test run uitest --app $appName --devices $deviceSetName --app-path $APPCENTER_OUTPUT_DIRECTORY/Pickster.ipa --test-series $testSeriesName --locale "en_US" --build-dir $APPCENTER_SOURCE_DIRECTORY/Pickster.UITests/bin/Debug --uitest-tools-dir $APPCENTER_SOURCE_DIRECTORY/packages/Xamarin.UITest.*/tools --token $appCenterLoginApiToken 
+
+appcenter test run xcuitest \
+    --app $appCenterName \
+    --devices $deviceSetName \
+    --test-series $testSeriesName \
+    --locale "en_US" \
+    --build-dir $APPCENTER_SOURCE_DIRECTORY/DerivedData/Build/Products/Debug-iphoneos
+    --token $appCenterLoginApiToken 
 
 echo ""
 echo "**************************************************************************************************"
